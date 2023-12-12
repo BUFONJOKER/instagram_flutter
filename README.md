@@ -15,8 +15,8 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 dart packages used in this project are
-cloud_firestore: ^4.13.5
-firebase_auth: ^4.15.2
-firebase_core: ^2.24.2
-firebase_storage: ^11.5.5
-image_picker: ^1.0.4
+### cloud_firestore: ^4.13.5
+### firebase_auth: ^4.15.2
+### firebase_core: ^2.24.2
+### firebase_storage: ^11.5.5
+### image_picker: ^1.0.4
