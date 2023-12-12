@@ -1,9 +1,41 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:instagram_flutter/layout/mobile_screen_layout.dart';
-import 'package:instagram_flutter/layout/web_screen_layout.dart';
-import 'package:instagram_flutter/responsive/responsive_layout.dart';
+// import 'package:instagram_flutter/layout/mobile_screen_layout.dart';
+// import 'package:instagram_flutter/layout/web_screen_layout.dart';
+// import 'package:instagram_flutter/responsive/responsive_layout.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'dart:core';
 
-void main() {
+// import 'package:instagram_flutter/screens/signup_screen.dart';
+
+import 'package:instagram_flutter/screens/login_screen.dart';
+// import 'package:instagram_flutter/screens/signup_screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  const apiKey = "AIzaSyAedA5jL2LeBGQoIP5cw1cbcmq8uN6iwv4";
+  const appId = "1:830172369399:web:f37fd147055ac1189c5ef2";
+  const messagingSenderId = "830172369399";
+  const projectId = "instagram-clone-6fe53";
+  const storageBucket = "instagram-clone-6fe53.appspot.com";
+
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: apiKey,
+        appId: appId,
+        messagingSenderId: messagingSenderId,
+        projectId: projectId,
+        storageBucket: storageBucket,
+  ));
+  // check if firebase connected
+
+  if (Firebase.apps.isNotEmpty) {
+    log(" firebase connected successfully");
+  } else {
+    log(" firebase connected successfully");
+  }
+
   runApp(const MyApp());
 }
 
@@ -14,14 +46,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-        useMaterial3: true,
+      debugShowCheckedModeBanner: false,
+      title: 'Instagram',
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: Colors.black,
+        
       ),
-      home: const ResponsiveLayout(
-          mobileScreenLayout: MobileScreenLayout(),
-          webScreenLayout: WebScreenLayout()),
+      
+      // home: const SignUpScreen(),
+
+      home: const LogInScreen(),
+
+      // home: const ResponsiveLayout(
+      //     mobileScreenLayout: MobileScreenLayout(),
+      //     webScreenLayout: WebScreenLayout()),
     );
   }
 }
