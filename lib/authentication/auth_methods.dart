@@ -3,7 +3,9 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:instagram_flutter/models/user.dart';
 import 'package:instagram_flutter/storage/storage_method.dart';
+import 'package:instagram_flutter/models/user.dart' as models;
 
 class AuthMethods {
   final FirebaseAuth authentication = FirebaseAuth.instance;
@@ -17,7 +19,8 @@ class AuthMethods {
     required String userName,
     required String bio,
     required Uint8List imageFile,
-    
+    required List followers,
+    required List following,
   }) async {
     String response = "Error Occured";
     try {
@@ -30,46 +33,45 @@ class AuthMethods {
             .createUserWithEmailAndPassword(email: email, password: password);
         log(credential.toString());
 
-
         // add image to firebase storage
-        String imageUrl = await  StorageMethod().uploadImageToStorage("profileImages", imageFile, false);
-
+        String imageUrl = await StorageMethod()
+            .uploadImageToStorage("profileImages", imageFile, false);
 
         // add user to database
-        Map<String,dynamic> data = {
-          "uid":credential.user!.uid,
-          "username": userName,
-          "email":email,
-          "bio":bio,
-          "imageUrl":imageUrl,
-        };
 
-        await firestore.collection("users").doc(credential.user!.uid).set(data);
+        models.User user = models.User(
+            email: email,
+            uid: credential.user!.uid,
+            password: password,
+            userName: userName,
+            bio: bio,
+            imageFile: imageUrl,
+            followers: [],
+            following: []);
+
+        await firestore.collection("users").doc(credential.user!.uid).set(
+              user.toJson(),
+            );
         response = "success";
       }
-    } 
-     catch (error) {
+    } catch (error) {
       response = error.toString();
     }
 
     return response;
   }
 
-
   // log in a user
 
-  Future<String> logInUser({
-    required String email,
-    required String password
-  }) async {
-
+  Future<String> logInUser(
+      {required String email, required String password}) async {
     String response = "Error occured";
     try {
-      if(email.isNotEmpty || password.isNotEmpty){
-        await authentication.signInWithEmailAndPassword(email: email, password: password);
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await authentication.signInWithEmailAndPassword(
+            email: email, password: password);
         response = "success";
-      }
-      else{
+      } else {
         response = "Please enter all the field";
       }
     } catch (error) {

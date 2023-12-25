@@ -1,14 +1,16 @@
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:instagram_flutter/layout/mobile_screen_layout.dart';
-// import 'package:instagram_flutter/layout/web_screen_layout.dart';
-// import 'package:instagram_flutter/responsive/responsive_layout.dart';
+import 'package:instagram_flutter/layout/mobile_screen_layout.dart';
+import 'package:instagram_flutter/layout/web_screen_layout.dart';
+import 'package:instagram_flutter/responsive/responsive_layout.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:core';
 
 // import 'package:instagram_flutter/screens/signup_screen.dart';
 
 import 'package:instagram_flutter/screens/login_screen.dart';
+// import 'package:instagram_flutter/screens/signup_screen.dart';
 // import 'package:instagram_flutter/screens/signup_screen.dart';
 
 void main() async {
@@ -22,11 +24,11 @@ void main() async {
 
   await Firebase.initializeApp(
       options: const FirebaseOptions(
-        apiKey: apiKey,
-        appId: appId,
-        messagingSenderId: messagingSenderId,
-        projectId: projectId,
-        storageBucket: storageBucket,
+    apiKey: apiKey,
+    appId: appId,
+    messagingSenderId: messagingSenderId,
+    projectId: projectId,
+    storageBucket: storageBucket,
   ));
   // check if firebase connected
 
@@ -50,13 +52,36 @@ class MyApp extends StatelessWidget {
       title: 'Instagram',
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
-        
       ),
-      
+
       // home: const SignUpScreen(),
 
-      home: const LogInScreen(),
+      // home: const LogInScreen(),
 
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasData) {
+              return const ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout());
+            }
+            else if(snapshot.hasError){
+              return Center(
+                child: Text("${snapshot.error}"),
+              );
+            }
+          }
+
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return const Center(
+              child: CircularProgressIndicator(backgroundColor: Colors.white),
+            );
+          }
+          return const LogInScreen();
+        },
+      ),
       // home: const ResponsiveLayout(
       //     mobileScreenLayout: MobileScreenLayout(),
       //     webScreenLayout: WebScreenLayout()),

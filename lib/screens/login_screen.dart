@@ -1,8 +1,12 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_flutter/authentication/auth_methods.dart';
+import 'package:instagram_flutter/layout/mobile_screen_layout.dart';
+import 'package:instagram_flutter/layout/web_screen_layout.dart';
+import 'package:instagram_flutter/responsive/responsive_layout.dart';
+import 'package:instagram_flutter/screens/signup_screen.dart';
 import 'package:instagram_flutter/snackbar/snackbar.dart';
 import 'package:instagram_flutter/widgets/text_field_input.dart';
 
@@ -33,17 +37,27 @@ class _LogInScreenState extends State<LogInScreen> {
         email: emailController.text, password: passwordController.text);
 
     if (response == "success") {
-      log("Logged in successfully");
       emailController.text = "";
       passwordController.text = "";
+      await Future.delayed(const Duration(seconds: 1));
+      if (!mounted) return;
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+              mobileScreenLayout: MobileScreenLayout(),
+              webScreenLayout: WebScreenLayout())));
     } else {
-      if(!context.mounted) return;
+      if (!context.mounted) return;
       showSnackBar(response, context);
     }
 
     setState(() {
       isLoading = false;
     });
+  }
+
+  void navigateToSignUp() {
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const SignUpScreen()));
   }
 
   @override
@@ -108,15 +122,19 @@ class _LogInScreenState extends State<LogInScreen> {
                       elevation: 10,
                     ),
                     onPressed: logInUser,
-                    child: isLoading? const Center(child: CircularProgressIndicator(
-                      backgroundColor: Colors.amberAccent,
-                    ),) :const Text(
-                      'Log In',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                      ),
-                    ),
+                    child: isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.amberAccent,
+                            ),
+                          )
+                        : const Text(
+                            'Log In',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                            ),
+                          ),
                   ),
                 ),
                 const SizedBox(
@@ -130,7 +148,9 @@ class _LogInScreenState extends State<LogInScreen> {
                       style: TextStyle(fontSize: 25),
                     ),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          navigateToSignUp();
+                        },
                         child: const Text(
                           "Sign Up",
                           style: TextStyle(

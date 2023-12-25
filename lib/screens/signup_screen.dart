@@ -5,6 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_flutter/authentication/auth_methods.dart';
 import 'package:instagram_flutter/image_picker/image_picker.dart';
+import 'package:instagram_flutter/layout/mobile_screen_layout.dart';
+import 'package:instagram_flutter/layout/web_screen_layout.dart';
+import 'package:instagram_flutter/responsive/responsive_layout.dart';
+// import 'package:instagram_flutter/screens/login_screen.dart';
 import 'package:instagram_flutter/snackbar/snackbar.dart';
 import 'package:instagram_flutter/widgets/text_field_input.dart';
 
@@ -22,6 +26,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController bioController = TextEditingController();
   Uint8List? image;
   bool isLoading = false;
+  List? followers;
+  List? following;
 
   void addPhoto() async {
     Uint8List photo = await selectImage(ImageSource.gallery);
@@ -31,6 +37,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void signUpUser() async {
+
+    if(!mounted){
+      return;
+    }
     setState(() {
       isLoading = true;
     });
@@ -41,22 +51,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
       userName: userNameController.text,
       bio: bioController.text,
       imageFile: image!,
+      followers: followers!,
+      following: following!,
     );
+    if (!mounted) {
+    return;
+  }
     setState(() {
       isLoading = false;
     });
     if (!context.mounted) return;
     if (response != "success") {
       showSnackBar(response, context);
-    }
-
-    else if( response == "success"){
+    } else if (response == "success") {
       emailController.text = "";
       userNameController.text = "";
       passwordController.text = "";
       bioController.text = "";
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout())));
     }
   }
+
+  // void navigateToLogIn() {
+  //   Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(builder: (context) => const LogInScreen()));
+  // }
 
   @override
   void dispose() {
@@ -180,6 +202,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     onPressed: () async {
                       signUpUser();
+                      
                     },
                     child: isLoading
                         ? const Center(
