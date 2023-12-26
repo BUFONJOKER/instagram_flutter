@@ -20,3 +20,4 @@ dart packages used in this project are
 ### firebase_core: ^2.24.2
 ### firebase_storage: ^11.5.5
 ### image_picker: ^1.0.4
+### provider: ^6.1.1
