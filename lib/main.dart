@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_flutter/layout/mobile_screen_layout.dart';
 import 'package:instagram_flutter/layout/web_screen_layout.dart';
+import 'package:instagram_flutter/providers/user_provider.dart';
 import 'package:instagram_flutter/responsive/responsive_layout.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:core';
@@ -10,6 +11,7 @@ import 'dart:core';
 // import 'package:instagram_flutter/screens/signup_screen.dart';
 
 import 'package:instagram_flutter/screens/login_screen.dart';
+import 'package:provider/provider.dart';
 // import 'package:instagram_flutter/screens/signup_screen.dart';
 // import 'package:instagram_flutter/screens/signup_screen.dart';
 
@@ -47,44 +49,52 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Instagram',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Colors.black,
-      ),
+    return
+    //  MultiProvider(
+      // providers: [
+      //   ChangeNotifierProvider(
+      //     create: () => UserProvider(),
+      //   )
+      // ],
+      // child: 
+      MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Instagram',
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: Colors.black,
+        ),
 
-      // home: const SignUpScreen(),
+        // home: const SignUpScreen(),
 
-      // home: const LogInScreen(),
+        // home: const LogInScreen(),
 
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.hasData) {
-              return const ResponsiveLayout(
-                  mobileScreenLayout: MobileScreenLayout(),
-                  webScreenLayout: WebScreenLayout());
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                return const ResponsiveLayout(
+                    mobileScreenLayout: MobileScreenLayout(),
+                    webScreenLayout: WebScreenLayout());
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text("${snapshot.error}"),
+                );
+              }
             }
-            else if(snapshot.hasError){
-              return Center(
-                child: Text("${snapshot.error}"),
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(backgroundColor: Colors.white),
               );
             }
-          }
-
-          if(snapshot.connectionState == ConnectionState.waiting){
-            return const Center(
-              child: CircularProgressIndicator(backgroundColor: Colors.white),
-            );
-          }
-          return const LogInScreen();
-        },
-      ),
-      // home: const ResponsiveLayout(
-      //     mobileScreenLayout: MobileScreenLayout(),
-      //     webScreenLayout: WebScreenLayout()),
+            return const LogInScreen();
+          },
+        ),
+        // home: const ResponsiveLayout(
+        //     mobileScreenLayout: MobileScreenLayout(),
+        //     webScreenLayout: WebScreenLayout()),
+      
     );
   }
 }

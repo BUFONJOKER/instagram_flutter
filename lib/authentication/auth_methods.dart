@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/material.dart';
 // import 'package:instagram_flutter/models/user.dart';
 import 'package:instagram_flutter/storage/storage_method.dart';
 import 'package:instagram_flutter/models/user.dart' as models;
@@ -10,6 +11,14 @@ import 'package:instagram_flutter/models/user.dart' as models;
 class AuthMethods {
   final FirebaseAuth authentication = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // Future<models.User> getUserDetails() async {
+  //   User currentUser = authentication.currentUser!;
+
+  //   DocumentSnapshot snap =
+  //       await firestore.collection("users").doc(currentUser.uid).get();
+  //   return models.User.fromSnap(snap);
+  // }
 
   // sign up a user
 
