@@ -5,10 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
-import 'package:instagram_flutter/models/user.dart' as models;
-import 'package:instagram_flutter/providers/user_provider.dart';
+// import 'package:instagram_flutter/models/user.dart' as models;
+// import 'package:instagram_flutter/providers/user_provider.dart';
 import 'package:instagram_flutter/responsive/global_variables.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
+
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({super.key});
@@ -31,7 +32,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+  
     super.dispose();
     pageController.dispose();
   }

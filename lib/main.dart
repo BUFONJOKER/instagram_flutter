@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_flutter/layout/mobile_screen_layout.dart';
 import 'package:instagram_flutter/layout/web_screen_layout.dart';
-import 'package:instagram_flutter/providers/user_provider.dart';
+// import 'package:instagram_flutter/providers/user_provider.dart';
 import 'package:instagram_flutter/responsive/responsive_layout.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:core';
@@ -11,7 +11,7 @@ import 'dart:core';
 // import 'package:instagram_flutter/screens/signup_screen.dart';
 
 import 'package:instagram_flutter/screens/login_screen.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 // import 'package:instagram_flutter/screens/signup_screen.dart';
 // import 'package:instagram_flutter/screens/signup_screen.dart';
 
